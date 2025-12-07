@@ -1,1 +1,361 @@
-ESP32 Digital VLF Metal Detector (Hybrid App)🇬🇧 English Version | 🇩🇪 Deutsche Version<a name="english"></a>🇬🇧 ESP32 Digital VLF Metal DetectorA modern, fully digital VLF (Very Low Frequency) metal detector project powered by the ESP32 microcontroller. This project combines high-performance digital signal processing (DSP) on the hardware side with a responsive, web-based user interface running inside an Android App (via MIT App Inventor).🌟 Key FeaturesFirmware (ESP32)VLF/IB Technology: Induction Balance method with digital phase and magnitude calculation.Full Digital Processing:Precise signal generation using ESP32 MCPWM unit.Oversampling and digital filtering (EMA) of ADC inputs.Vector math to determine VDI (Visual Discrimination Indicator) and signal strength.Bluetooth Low Energy (BLE): Efficient communication with the smartphone.Auto-Calibration: Systems for Ground Balance and Maximum Signal reference.Hardware Control: Support for LED Flashlight (via MOSFET) and battery monitoring.Hybrid App & UI (HTML/JS + AI2)The app is designed as a hybrid application. The logic and UI are written in standard web technologies (HTML/CSS/JS) but hosted within a native Android container.Real-time Visualization: Chart.js renders live graphs of VDI and Signal Strength.Metal Discrimination: Visual categorization (Iron, Foil, Gold, Silver, etc.) with touch-to-disable segments.Audio Engine: Tone generation uses the Web Audio API (sound.js) to generate lag-free audio directly in the WebView.Control Center: Adjust Sensitivity, Sample Rate, Phase Shift, and toggle Flashlight ('M'/'N' commands).🏗️ System ArchitectureThis project uses a unique approach to UI development for microcontrollers:The Host (MIT App Inventor): The Android app handles the BLE connection to the ESP32. It acts as a wrapper.The View (WebViewer): The app contains a WebViewer component that loads local HTML files (index.html for UI, ton.html for Audio).The Bridge: Data is passed between the App logic (Blocks) and the JavaScript (logic.js) using the WebViewString property.ESP32 -> BLE -> AI2 -> WebViewString -> JavaScript (Update UI)JavaScript -> WebViewString -> AI2 -> BLE -> ESP32 (Send Commands)🛠️ Hardware SetupCore: ESP32 Development BoardPinoutFunctionGPIODescriptionTX Coil25PWM Transmit SignalRX X-Channel34Analog In (In-Phase / Sensor VP)RX R-Channel35Analog In (Quadrature / Sensor VN)Vref26DAC Output (Reference Voltage)Phase X Ref32Demodulator Reference (X)Phase R Ref33Demodulator Reference (R)Flashlight4LED Control (via MOSFET Gate)Battery39Voltage Divider InputStatus LED2Onboard LEDFlashlight CircuitTo control the high-power LED, use an N-Channel Logic-Level MOSFET (e.g., IRLZ44N):Gate: GPIO 4 (via 100Ω resistor + 10kΩ pull-down).Drain: LED Cathode (-).Source: GND.💻 Installation & Flashing1. ESP32 FirmwareInstall Arduino IDE.Install the ESP32 Board Package.Required Libraries: EEPROM, BLEDevice.Open VLF_Metal_Detector_ESP32.ino, select your board, and flash.2. Android App (MIT App Inventor)Create a project at MIT App Inventor.Import Assets: Upload the following files to the "Media" section of your project:index.html (Main UI)ton.html (Audio Engine container)logic.js (UI Logic)sound.js (Audio Logic)chart.js (Graph Library)Images (Sondeln.png, VDIImage.png)WebView Setup: Set the HomeUrl of your WebViewer component to file:///android_asset/index.html.BLE Logic: Implement the BLE block logic to read strings from the ESP32 and pass them to WebViewer.WebViewString.📄 LicenseMIT License - Copyright (c) 2025 Anhaltiner01<a name="deutsch"></a>🇩🇪 ESP32 Digitaler VLF MetalldetektorEin modernes, digitales VLF (Very Low Frequency) Metalldetektor-Projekt auf Basis des ESP32 Mikrocontrollers. Dieses Projekt kombiniert leistungsfähige digitale Signalverarbeitung (DSP) auf dem ESP32 mit einer modernen, webbasierten Benutzeroberfläche, die in einer Android-App (via MIT App Inventor) läuft.🌟 FunktionenFirmware (ESP32)VLF/IB Technologie: Basiert auf dem Induktions-Balance-Verfahren mit digitaler Phasen- und Signalauswertung.Volldigitale Verarbeitung:Hochpräzise Signalerzeugung mittels ESP32 MCPWM.Oversampling und digitale Filterung (EMA) der ADC-Werte.Vektor-Berechnung (Magnitude & Phase) zur Bestimmung von Metallart (VDI) und Tiefe.Bluetooth Low Energy (BLE): Energiesparende Kommunikation mit dem Smartphone.Automatische Kalibrierung:Ground Balance: Abgleich der Bodenmineralisierung.Max Signal: Kalibrierung auf Referenzobjekte.Hardware-Steuerung: Unterstützung für eine Beleuchtungs-LED (MOSFET an GPIO 4) und Batteriemessung.Hybrid App & UI (HTML/JS + AI2)Die Benutzeroberfläche ist als Hybrid-App konzipiert. Die Logik läuft in Web-Technologies, eingebettet in eine native Android Hülle.Echtzeit-Visualisierung: Graphische Darstellung von VDI (Leitwert) und Signalstärke mittels Chart.js.Metall-Diskriminierung: Visuelle Unterscheidung von Metallen (Eisen, Folie, Gold, Silber, Kupfer) mit anpassbarem Notch-Filter durch Antippen.Audio Engine: Erzeugung von Tönen direkt im Webview via Web Audio API (sound.js), basierend auf dem erkannten Metall (keine Latenz durch Bluetooth-Audio-Streaming).Einstellungen: Fernsteuerung aller Parameter (Sensitivität, Sample Rate, Phase) und Lichtsteuerung ('M'/'N' Befehle).🏗️ Systemarchitektur & App-ErstellungDieses Projekt nutzt einen hybriden Ansatz für die App-Entwicklung:Der Host (MIT App Inventor): Die Android-App verwaltet die BLE-Verbindung zum ESP32. Sie dient als Container.Die Ansicht (WebViewer): Die App enthält eine WebViewer-Komponente, die lokale HTML-Dateien lädt (index.html für die UI, ton.html für Audio).Die Brücke: Daten werden zwischen der App-Logik (Blöcke) und dem JavaScript (logic.js) über die Eigenschaft WebViewString ausgetauscht.ESP32 sendet Daten -> BLE -> AI2 -> WebViewString -> JavaScript (Update der Charts/Werte)JavaScript Button -> WebViewString -> AI2 -> BLE -> ESP32 (Senden von Befehlen)🛠️ Hardware AufbauKern: ESP32 Development BoardPinbelegungFunktionGPIOBeschreibungTX Spule25Sendesignal (PWM)RX X-Kanal34Analog-Eingang In-Phase (Sensor VP)RX R-Kanal35Analog-Eingang Quadratur (Sensor VN)Vref26Referenzspannung (DAC Ausgang)Phase X Ref32Referenzsignal für Demodulator (X)Phase R Ref33Referenzsignal für Demodulator (R)Beleuchtung4LED-Steuerung (via MOSFET Gate)Batterie39Spannungsteiler zur MessungStatus LED2Onboard LED (Status/Heartbeat)Beleuchtungs-SchaltungFür die LED-Beleuchtung wird ein N-Channel Logic-Level MOSFET empfohlen (z.B. IRLZ44N):Gate: an GPIO 4 (mit 100Ω Widerstand + 10kΩ Pull-Down gegen GND).Drain: an LED Kathode (-).Source: an GND.💻 Installation1. ESP32 FirmwareInstalliere die Arduino IDE.Installiere das ESP32 Board Package über den Boardverwalter.Benötigte Bibliotheken: EEPROM, BLEDevice.Öffne VLF_Metal_Detector_ESP32.ino, wähle das Board und flashe den Code.2. Android App (MIT App Inventor)Erstelle ein Projekt in MIT App Inventor.Assets Importieren: Lade folgende Dateien als Media Assets hoch:index.html (Haupt-UI)ton.html (Audio-Engine Container)logic.js (Steuerungslogik)sound.js (Audio Logik)chart.js (Diagramm-Bibliothek)Bilder (Sondeln.png, VDIImage.png)WebView Konfiguration: Setze die HomeUrl des WebViewers auf file:///android_asset/index.html.BLE Logik: Erstelle die Block-Logik, um Strings vom ESP32 zu empfangen und an WebViewer.WebViewString weiterzuleiten.📱 BedienungStart: Schalte den ESP32 ein und starte die App.Verbindung: Die App verbindet sich über BLE (ESP32 Metal Detector).Kalibrierung (Wichtig!):Tab Calibration wählen.Spule in die Luft halten.Start Ground Balance drücken und Spule "pumpen".Suche:Tab Status wählen.Diagramm beobachten (Orange = Material, Blau = Stärke).Licht: Mit den Befehlen in der App (oder Buttons, falls implementiert) kann das Licht an GPIO 4 geschaltet werden.📄 LizenzMIT Lizenz - Copyright (c) 2025 Anhaltiner01
+ESP32 Digital VLF Metal Detector (Hybrid App)
+
+🇬🇧 English Version | 🇩🇪 Deutsche Version
+
+<a name="english"></a>
+
+🇬🇧 ESP32 Digital VLF Metal Detector
+
+A modern, fully digital VLF (Very Low Frequency) metal detector project powered by the ESP32 microcontroller. This project combines high-performance digital signal processing (DSP) on the hardware side with a responsive, web-based user interface running inside an Android App (via MIT App Inventor).
+
+🌟 Key Features
+
+Firmware (ESP32)
+
+VLF/IB Technology: Induction Balance method with digital phase and magnitude calculation.
+
+Full Digital Processing:
+
+Precise signal generation using ESP32 MCPWM unit.
+
+Oversampling and digital filtering (EMA) of ADC inputs.
+
+Vector math to determine VDI (Visual Discrimination Indicator) and signal strength.
+
+Bluetooth Low Energy (BLE): Efficient communication with the smartphone.
+
+Auto-Calibration: Systems for Ground Balance and Maximum Signal reference.
+
+Hardware Control: Support for LED Flashlight (via MOSFET) and battery monitoring.
+
+Hybrid App & UI (HTML/JS + AI2)
+
+The app is designed as a hybrid application. The logic and UI are written in standard web technologies (HTML/CSS/JS) but hosted within a native Android container.
+
+Real-time Visualization: Chart.js renders live graphs of VDI and Signal Strength.
+
+Metal Discrimination: Visual categorization (Iron, Foil, Gold, Silver, etc.) with touch-to-disable segments.
+
+Audio Engine: Tone generation uses the Web Audio API (sound.js) to generate lag-free audio directly in the WebView.
+
+Control Center: Adjust Sensitivity, Sample Rate, Phase Shift, and toggle Flashlight ('M'/'N' commands).
+
+🏗️ System Architecture
+
+This project uses a unique approach to UI development for microcontrollers:
+
+The Host (MIT App Inventor): The Android app handles the BLE connection to the ESP32. It acts as a wrapper.
+
+The View (WebViewer): The app contains a WebViewer component that loads local HTML files (index.html for UI, ton.html for Audio).
+
+The Bridge: Data is passed between the App logic (Blocks) and the JavaScript (logic.js) using the WebViewString property.
+
+ESP32 -> BLE -> AI2 -> WebViewString -> JavaScript (Update UI)
+
+JavaScript -> WebViewString -> AI2 -> BLE -> ESP32 (Send Commands)
+
+🛠️ Hardware Setup
+
+Core: ESP32 Development Board
+
+Pinout
+
+Function
+
+GPIO
+
+Description
+
+TX Coil
+
+25
+
+PWM Transmit Signal
+
+RX X-Channel
+
+34
+
+Analog In (In-Phase / Sensor VP)
+
+RX R-Channel
+
+35
+
+Analog In (Quadrature / Sensor VN)
+
+Vref
+
+26
+
+DAC Output (Reference Voltage)
+
+Phase X Ref
+
+32
+
+Demodulator Reference (X)
+
+Phase R Ref
+
+33
+
+Demodulator Reference (R)
+
+Flashlight
+
+4
+
+LED Control (via MOSFET Gate)
+
+Battery
+
+39
+
+Voltage Divider Input
+
+Status LED
+
+2
+
+Onboard LED
+
+Flashlight Circuit
+
+To control the high-power LED, use an N-Channel Logic-Level MOSFET (e.g., IRLZ44N):
+
+Gate: GPIO 4 (via 100Ω resistor + 10kΩ pull-down).
+
+Drain: LED Cathode (-).
+
+Source: GND.
+
+💻 Installation & Flashing
+
+1. ESP32 Firmware
+
+Install Arduino IDE.
+
+Install the ESP32 Board Package.
+
+Required Libraries: EEPROM, BLEDevice.
+
+Open VLF_Metal_Detector_ESP32.ino, select your board, and flash.
+
+2. Android App (MIT App Inventor)
+
+Create a project at MIT App Inventor.
+
+Import Assets: Upload the following files to the "Media" section of your project:
+
+index.html (Main UI)
+
+ton.html (Audio Engine container)
+
+logic.js (UI Logic)
+
+sound.js (Audio Logic)
+
+chart.js (Graph Library)
+
+Images (Sondeln.png, VDIImage.png)
+
+WebView Setup: Set the HomeUrl of your WebViewer component to file:///android_asset/index.html.
+
+BLE Logic: Implement the BLE block logic to read strings from the ESP32 and pass them to WebViewer.WebViewString.
+
+📄 License
+
+MIT License - Copyright (c) 2025 Anhaltiner01
+
+<a name="deutsch"></a>
+
+🇩🇪 ESP32 Digitaler VLF Metalldetektor
+
+Ein modernes, digitales VLF (Very Low Frequency) Metalldetektor-Projekt auf Basis des ESP32 Mikrocontrollers. Dieses Projekt kombiniert leistungsfähige digitale Signalverarbeitung (DSP) auf dem ESP32 mit einer modernen, webbasierten Benutzeroberfläche, die in einer Android-App (via MIT App Inventor) läuft.
+
+🌟 Funktionen
+
+Firmware (ESP32)
+
+VLF/IB Technologie: Basiert auf dem Induktions-Balance-Verfahren mit digitaler Phasen- und Signalauswertung.
+
+Volldigitale Verarbeitung:
+
+Hochpräzise Signalerzeugung mittels ESP32 MCPWM.
+
+Oversampling und digitale Filterung (EMA) der ADC-Werte.
+
+Vektor-Berechnung (Magnitude & Phase) zur Bestimmung von Metallart (VDI) und Tiefe.
+
+Bluetooth Low Energy (BLE): Energiesparende Kommunikation mit dem Smartphone.
+
+Automatische Kalibrierung:
+
+Ground Balance: Abgleich der Bodenmineralisierung.
+
+Max Signal: Kalibrierung auf Referenzobjekte.
+
+Hardware-Steuerung: Unterstützung für eine Beleuchtungs-LED (MOSFET an GPIO 4) und Batteriemessung.
+
+Hybrid App & UI (HTML/JS + AI2)
+
+Die Benutzeroberfläche ist als Hybrid-App konzipiert. Die Logik läuft in Web-Technologies, eingebettet in eine native Android Hülle.
+
+Echtzeit-Visualisierung: Graphische Darstellung von VDI (Leitwert) und Signalstärke mittels Chart.js.
+
+Metall-Diskriminierung: Visuelle Unterscheidung von Metallen (Eisen, Folie, Gold, Silber, Kupfer) mit anpassbarem Notch-Filter durch Antippen.
+
+Audio Engine: Erzeugung von Tönen direkt im Webview via Web Audio API (sound.js), basierend auf dem erkannten Metall (keine Latenz durch Bluetooth-Audio-Streaming).
+
+Einstellungen: Fernsteuerung aller Parameter (Sensitivität, Sample Rate, Phase) und Lichtsteuerung ('M'/'N' Befehle).
+
+🏗️ Systemarchitektur & App-Erstellung
+
+Dieses Projekt nutzt einen hybriden Ansatz für die App-Entwicklung:
+
+Der Host (MIT App Inventor): Die Android-App verwaltet die BLE-Verbindung zum ESP32. Sie dient als Container.
+
+Die Ansicht (WebViewer): Die App enthält eine WebViewer-Komponente, die lokale HTML-Dateien lädt (index.html für die UI, ton.html für Audio).
+
+Die Brücke: Daten werden zwischen der App-Logik (Blöcke) und dem JavaScript (logic.js) über die Eigenschaft WebViewString ausgetauscht.
+
+ESP32 sendet Daten -> BLE -> AI2 -> WebViewString -> JavaScript (Update der Charts/Werte)
+
+JavaScript Button -> WebViewString -> AI2 -> BLE -> ESP32 (Senden von Befehlen)
+
+🛠️ Hardware Aufbau
+
+Kern: ESP32 Development Board
+
+Pinbelegung
+
+Funktion
+
+GPIO
+
+Beschreibung
+
+TX Spule
+
+25
+
+Sendesignal (PWM)
+
+RX X-Kanal
+
+34
+
+Analog-Eingang In-Phase (Sensor VP)
+
+RX R-Kanal
+
+35
+
+Analog-Eingang Quadratur (Sensor VN)
+
+Vref
+
+26
+
+Referenzspannung (DAC Ausgang)
+
+Phase X Ref
+
+32
+
+Referenzsignal für Demodulator (X)
+
+Phase R Ref
+
+33
+
+Referenzsignal für Demodulator (R)
+
+Beleuchtung
+
+4
+
+LED-Steuerung (via MOSFET Gate)
+
+Batterie
+
+39
+
+Spannungsteiler zur Messung
+
+Status LED
+
+2
+
+Onboard LED (Status/Heartbeat)
+
+Beleuchtungs-Schaltung
+
+Für die LED-Beleuchtung wird ein N-Channel Logic-Level MOSFET empfohlen (z.B. IRLZ44N):
+
+Gate: an GPIO 4 (mit 100Ω Widerstand + 10kΩ Pull-Down gegen GND).
+
+Drain: an LED Kathode (-).
+
+Source: an GND.
+
+💻 Installation
+
+1. ESP32 Firmware
+
+Installiere die Arduino IDE.
+
+Installiere das ESP32 Board Package über den Boardverwalter.
+
+Benötigte Bibliotheken: EEPROM, BLEDevice.
+
+Öffne VLF_Metal_Detector_ESP32.ino, wähle das Board und flashe den Code.
+
+2. Android App (MIT App Inventor)
+
+Erstelle ein Projekt in MIT App Inventor.
+
+Assets Importieren: Lade folgende Dateien als Media Assets hoch:
+
+index.html (Haupt-UI)
+
+ton.html (Audio-Engine Container)
+
+logic.js (Steuerungslogik)
+
+sound.js (Audio Logik)
+
+chart.js (Diagramm-Bibliothek)
+
+Bilder (Sondeln.png, VDIImage.png)
+
+WebView Konfiguration: Setze die HomeUrl des WebViewers auf file:///android_asset/index.html.
+
+BLE Logik: Erstelle die Block-Logik, um Strings vom ESP32 zu empfangen und an WebViewer.WebViewString weiterzuleiten.
+
+📱 Bedienung
+
+Start: Schalte den ESP32 ein und starte die App.
+
+Verbindung: Die App verbindet sich über BLE (ESP32 Metal Detector).
+
+Kalibrierung (Wichtig!):
+
+Tab Calibration wählen.
+
+Spule in die Luft halten.
+
+Start Ground Balance drücken und Spule "pumpen".
+
+Suche:
+
+Tab Status wählen.
+
+Diagramm beobachten (Orange = Material, Blau = Stärke).
+
+Licht: Mit den Befehlen in der App (oder Buttons, falls implementiert) kann das Licht an GPIO 4 geschaltet werden.
+
+📄 Lizenz
+
+MIT Lizenz - Copyright (c) 2025 Anhaltiner01
