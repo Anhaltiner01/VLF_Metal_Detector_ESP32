@@ -5,6 +5,7 @@
 # **🇬🇧 ESP32 Digital VLF Metal Detector**
 
 A modern, fully digital VLF (Very Low Frequency) metal detector project powered by the ESP32 microcontroller. This project combines high-performance digital signal processing (DSP) on the hardware side with a responsive, web-based user interface running inside an Android App (via MIT App Inventor).
+The circuit diagram and test board for this project can be found under the [Project](https://github.com/folny/ESP32_Metal_Detector/tree/master/Eagle8_file) as a source of inspiration.
 
 ## **🌟 Key Features**
 
@@ -93,6 +94,7 @@ MIT License \- Copyright (c) 2025 Anhaltiner01
 # **🇩🇪 ESP32 Digitaler VLF Metalldetektor**
 
 Ein modernes, digitales VLF (Very Low Frequency) Metalldetektor-Projekt auf Basis des ESP32 Mikrocontrollers. Dieses Projekt kombiniert leistungsfähige digitale Signalverarbeitung (DSP) auf dem ESP32 mit einer modernen, webbasierten Benutzeroberfläche, die in einer Android-App (via MIT App Inventor) läuft.
+Der Stromlaufplan und das Testboard für dieses Projekt ist unter dem [Projekt](https://github.com/folny/ESP32_Metal_Detector/tree/master/Eagle8_file) als Ideengeber zu finden.
 
 ## **🌟 Funktionen**
 
